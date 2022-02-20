@@ -9,7 +9,7 @@
 **Install dependencies**: run `npm i`
 
 **Host the server locally from this directory**: run `ts-node-dev ./src/index.ts`
-This will update the server automatically on changes
+This will update the server automatically on changes.
 
 To compile to javascript for production: run `npm build`
 Output appears in ./dist

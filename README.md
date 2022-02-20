@@ -1,4 +1,4 @@
-# Dental Clinic Management System
+# Dental Clinic Management System - Backend Server
 
 ## CSI2132 Group 24
 

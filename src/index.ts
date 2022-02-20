@@ -17,12 +17,12 @@ app.post("/add-to-test-table", async (req, res) => {
     res.send(reply);
   } catch (err) {
     console.error(err.message);
-    res.sendStatus(500);
+    res.status(500).send(err);
   }
 });
 
 //testing get
-app.get("/get-test-table", async (req, res) => {
+app.get("/get-test-table", async (_, res) => {
   try {
     console.log("Received request for test_table");
     const reply = await db.func("get_test_table");
@@ -30,7 +30,7 @@ app.get("/get-test-table", async (req, res) => {
     res.send(reply);
   } catch (err) {
     console.error(err.message);
-    res.sendStatus(500);
+    res.status(500).send(err);
   }
 });
 

@@ -4,7 +4,7 @@
 
 ### Instructions:
 
-**Add the password** to `src/db.ts`, but don't push it to github please.
+**Add a `.env` file** to the root directory, containing `HEROKU_PASSWORD=password`
 
 **Install dependencies**: run `npm i`
 

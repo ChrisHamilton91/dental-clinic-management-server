@@ -1,14 +1,25 @@
 import express from "express";
 import cors from "cors";
 import db from "./db";
+import { Request, Response } from "express-serve-static-core/index";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+//authenticate
+function authenticate(req: Request, res: Response): boolean {
+  if (req.header("api-key") !== process.env.API_KEY) {
+    res.status(401).send("Invalid api key.");
+    return false;
+  }
+  return true;
+}
+
 //testing post
 app.post("/add-to-test-table", async (req, res) => {
   try {
+    if (!authenticate(req, res)) return;
     const { data } = req.body;
     console.log("received " + data);
     await db.proc("add_to_test_table", [data]);

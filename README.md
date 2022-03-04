@@ -14,4 +14,4 @@ This will update the server automatically on changes.
 You can also install `ts-node-dev` globally with `npm i -g ts-node-dev` and the command becomes `ts-node-dev ./src/index.ts`
 
 To compile to javascript for production: run `npm build`
-Output appears in ./dist
+Output appears in ./dist (Not necessary for Heroku deploys - just push to the production branch)

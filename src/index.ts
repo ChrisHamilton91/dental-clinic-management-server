@@ -32,6 +32,24 @@ app.post("/add-to-test-table", async (req, res) => {
   }
 });
 
+//testing post2
+app.post("/add-to-my-table", async (req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    const { data, foreign_id } = req.body;
+    console.log(
+      "received " + JSON.stringify({ data: data, foreign_id: foreign_id })
+    );
+    await db.proc("add_to_test_table", [data]);
+    const reply = `Added data: ${data} and foreign_id ${foreign_id} to test_table`;
+    console.log(reply);
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
 //testing get
 app.get("/get-test-table", async (_, res) => {
   try {

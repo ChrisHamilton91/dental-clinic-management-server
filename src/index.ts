@@ -40,7 +40,7 @@ app.post("/add-to-my-table", async (req, res) => {
     console.log(
       "received " + JSON.stringify({ data: data, foreign_id: foreign_id })
     );
-    await db.proc("add_to_test_table", [data]);
+    await db.proc("add_to_my_table", [data, foreign_id]);
     const reply = `Added data: ${data} and foreign_id ${foreign_id} to test_table`;
     console.log(reply);
     res.send(reply);

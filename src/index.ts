@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import db from "./db";
 import { Request, Response } from "express-serve-static-core/index";
+import { Person } from "./schema/person";
 
 const app = express();
 app.use(cors());
@@ -32,24 +33,6 @@ app.post("/add-to-test-table", async (req, res) => {
   }
 });
 
-//testing post2
-app.post("/add-to-my-table", async (req, res) => {
-  try {
-    if (!authenticate(req, res)) return;
-    const { data, foreign_id } = req.body;
-    console.log(
-      "received " + JSON.stringify({ data: data, foreign_id: foreign_id })
-    );
-    await db.proc("add_to_my_table", [data, foreign_id]);
-    const reply = `Added data: ${data} and foreign_id ${foreign_id} to test_table`;
-    console.log(reply);
-    res.send(reply);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send(err);
-  }
-});
-
 //testing get
 app.get("/get-test-table", async (_, res) => {
   try {
@@ -60,6 +43,35 @@ app.get("/get-test-table", async (_, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send(err);
+  }
+});
+
+//Add person
+app.post("/add-person", async (req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Adding person...");
+    const p: Person = req.body;
+    const result = await db.func("add_person", [
+      p.house_number,
+      p.street,
+      p.city,
+      p.province,
+      p.first_name,
+      p.middle_name ? p.middle_name : "",
+      p.last_name,
+      p.gender,
+      p.ssn,
+      p.email,
+      p.date_of_birth,
+      p.user_id ? p.user_id : null,
+    ]);
+    const id = result[0]?.add_person;
+    console.log("Added person, id: ", id);
+    res.send({ id });
+  } catch (err) {
+    console.error(err.message);
+    res.sendStatus(500).send(err);
   }
 });
 

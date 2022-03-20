@@ -58,13 +58,13 @@ app.post("/add-person", async (req, res) => {
       p.city,
       p.province,
       p.first_name,
-      p.middle_name ? p.middle_name : "",
+      p.middle_name || "",
       p.last_name,
       p.gender,
       p.ssn,
       p.email,
       p.date_of_birth,
-      p.user_id ? p.user_id : null,
+      p.user_id || null,
     ]);
     const id = result[0]?.add_person;
     console.log("Added person, id: ", id);

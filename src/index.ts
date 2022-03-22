@@ -17,6 +17,12 @@ function authenticate(req: Request, res: Response): boolean {
   return true;
 }
 
+//test api-key
+app.get("/test-api-key", async (req, res) => {
+  if (!authenticate(req, res)) return;
+  res.send("Api key is valid.");
+});
+
 //testing post
 app.post("/add-to-test-table", async (req, res) => {
   try {

@@ -19,8 +19,8 @@ function authenticate(req: Request, res: Response): boolean {
 
 //test api-key
 app.get("/test-api-key", async (req, res) => {
-  if (!authenticate(req, res)) return;
-  res.send("Api key is valid.");
+  if (req.header("api-key") === process.env.API_KEY) res.send(true);
+  else res.send(false);
 });
 
 //testing post

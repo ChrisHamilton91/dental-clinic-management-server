@@ -3,6 +3,7 @@ import cors from "cors";
 import db from "./db";
 import { Request, Response } from "express-serve-static-core/index";
 import { Person } from "./schema/person";
+import { queryResult } from "pg-promise";
 
 const app = express();
 app.use(cors());
@@ -52,32 +53,35 @@ app.get("/get-test-table", async (_, res) => {
   }
 });
 
-//Add person
-app.post("/add-person", async (req, res) => {
+//Add person as patient
+app.post("/add-person-as-patient", async (req, res) => {
   try {
     if (!authenticate(req, res)) return;
-    console.log("Adding person...");
+    console.log("Adding person as patient...");
     const p: Person = req.body;
-    const result = await db.func("add_person", [
-      p.house_number,
-      p.street,
-      p.city,
-      p.province,
-      p.first_name,
-      p.middle_name || "",
-      p.last_name,
-      p.gender,
-      p.ssn,
-      p.email,
-      p.date_of_birth,
-      p.user_id || null,
-    ]);
-    const id = result[0]?.add_person;
-    console.log("Added person, id: ", id);
-    res.send({ id });
+    const result = await db.func(
+      "add_person_as_patient",
+      [
+        p.house_number,
+        p.street,
+        p.city,
+        p.province,
+        p.first_name,
+        p.middle_name || "",
+        p.last_name,
+        p.gender,
+        p.ssn,
+        p.email,
+        p.date_of_birth,
+        p.user_id || null,
+      ],
+      queryResult.one
+    );
+    res.send(result);
+    console.log("Added person as patient", result);
   } catch (err) {
-    console.error(err.message);
     res.sendStatus(500).send(err);
+    console.error(err.message);
   }
 });
 

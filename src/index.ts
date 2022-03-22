@@ -77,7 +77,18 @@ app.post("/add-person-as-patient", async (req, res) => {
       ],
       queryResult.one
     );
-    console.log("Added person as patient", result);
+    console.log("Added person as patient ", result);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message, detail: err.detail });
+  }
+});
+
+//Get all patients
+app.get("/get-all-patients", async (_, res) => {
+  try {
+    const result = await db.func("get_all_patients");
     res.send(result);
   } catch (err) {
     console.log(err);

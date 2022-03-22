@@ -81,7 +81,7 @@ app.post("/add-person-as-patient", async (req, res) => {
     res.send(result);
   } catch (err) {
     console.error(err.message);
-    res.sendStatus(500).send(err);
+    res.status(500).send(err);
   }
 });
 

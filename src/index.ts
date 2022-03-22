@@ -80,8 +80,8 @@ app.post("/add-person-as-patient", async (req, res) => {
     console.log("Added person as patient", result);
     res.send(result);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send(err);
+    console.log(err);
+    res.status(500).send({ message: err.message, detail: err.detail });
   }
 });
 

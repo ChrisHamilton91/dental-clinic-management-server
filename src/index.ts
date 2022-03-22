@@ -77,11 +77,11 @@ app.post("/add-person-as-patient", async (req, res) => {
       ],
       queryResult.one
     );
-    res.send(result);
     console.log("Added person as patient", result);
+    res.send(result);
   } catch (err) {
-    res.sendStatus(500).send(err);
     console.error(err.message);
+    res.sendStatus(500).send(err);
   }
 });
 

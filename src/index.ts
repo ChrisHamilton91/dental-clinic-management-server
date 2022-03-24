@@ -107,6 +107,17 @@ app.get("/get-all-employees", async (_, res) => {
   }
 });
 
+//Get all dentists
+app.get("/get-all-dentists", async (_, res) => {
+  try {
+    const result = await db.func("get_all_dentists");
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message, detail: err.detail });
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("server has started on port " + port);

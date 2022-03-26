@@ -494,6 +494,78 @@ app.get("/show-dentists", async (_, res) =>{
   }
 });
 
+//Update patient with patient id
+app.patch("/update-patient-with-patient-id", async (req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Updating patient using patient id...");
+    const {patient_id, house_number, street, city, province, first_name, middle_name, last_name, gender, ssn, email, date_of_birth, user_id} = req.body;
+    console.log(
+      "received " + JSON.stringify({ patient_id : patient_id, house_number: house_number, street: street, city: city, province: province, first_name: first_name, middle_name: middle_name, last_name: last_name, gender: gender, ssn: ssn, email: email, date_of_birth: date_of_birth, user_id: user_id })
+    );
+    await db.proc(
+      "update_patient_with_patient_id",
+      [
+        patient_id,
+        house_number,
+        street,
+        city,
+        province,
+        first_name,
+        middle_name,
+        last_name,
+        gender,
+        ssn,
+        email,
+        date_of_birth,
+        user_id,
+      ],
+    );
+    const reply = `Information of patient ${patient_id} has been updated`;
+    console.log(reply);
+    res.send(reply);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message, detail: err.detail });
+  }
+});
+
+//Update patient with person id
+app.patch("/update-patient-with-person-id", async (req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Updating patient using person id...");
+    const {person_id, house_number, street, city, province, first_name, middle_name, last_name, gender, ssn, email, date_of_birth, user_id} = req.body;
+    console.log(
+      "received " + JSON.stringify({ person_id : person_id, house_number: house_number, street: street, city: city, province: province, first_name: first_name, middle_name: middle_name, last_name: last_name, gender: gender, ssn: ssn, email: email, date_of_birth: date_of_birth, user_id: user_id })
+    );
+    await db.proc(
+      "update_patient_with_person_id",
+      [
+        person_id,
+        house_number,
+        street,
+        city,
+        province,
+        first_name,
+        middle_name,
+        last_name,
+        gender,
+        ssn,
+        email,
+        date_of_birth,
+        user_id,
+      ],
+    );
+    const reply = `Information of patient with person id = ${person_id} has been updated`;
+    console.log(reply);
+    res.send(reply);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: err.message, detail: err.detail });
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("server has started on port " + port);

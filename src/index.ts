@@ -566,6 +566,71 @@ app.patch("/update-patient-with-person-id", async (req, res) => {
   }
 });
 
+//set a new appointment
+app.put("/set-appointment", async (req, res) => {
+  try{
+    if (!authenticate(req, res)) return;
+    console.log("Setting a new appointment...");
+    const {start_time, end_time, type, patient_id, invoice_id, room} = req.body;
+    console.log("received " + JSON.stringify({start_time: start_time, end_time:end_time, type:type, patient_id:patient_id, invoice_id:invoice_id, room:room}));
+    await db.proc(
+      "add_appointment",
+      [
+        start_time,
+        end_time,
+        type,
+        patient_id,
+        invoice_id,
+        room
+      ]
+    );
+    const reply = `Added new appointment for patient ${patient_id}`;
+    console.log(reply);
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
+//check all the appointments for a patient
+app.get("/check-appointments-for-patient", async(req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Getting all appointments for patient...");
+    const {patient_id} = req.body;
+    console.log("received "+ + JSON.stringify({patient_id}));
+    const reply = await db.func(
+      "get_appointments_for_patient",
+      [patient_id]
+    );
+    console.log("Got appointments for patient " + reply);
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
+//check all the appointments for a dentist
+app.get("/check-appointments-for-dentist", async(req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Getting all appointments for dentist...");
+    const {dentist_id} = req.body;
+    console.log("received "+ + JSON.stringify({dentist_id}));
+    const reply = await db.func(
+      "get_appointments_for_dentist",
+      [dentist_id]
+    );
+    console.log("Got appointments for dentist " + reply);
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("server has started on port " + port);

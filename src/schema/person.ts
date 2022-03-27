@@ -44,10 +44,10 @@ export type Branch = Confirmation & {
 }
 
 export type Replacement = Confirmation & {
-  rep_first_name: string;
-  rep_last_name: string;
-  rep_ssn: number;
-  rep_email: string;
+  old_first_name: string;
+  old_last_name: string;
+  old_ssn: number;
+  old_email: string;
 };
 
 enum Gender {

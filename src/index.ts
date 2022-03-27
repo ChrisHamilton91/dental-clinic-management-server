@@ -435,10 +435,10 @@ app.post("/change-manager", async (req, res) => {
         r.last_name,
         r.ssn,
         r.email,
-        r.rep_first_name,
-        r.rep_last_name,
-        r.rep_ssn,
-        r.rep_email
+        r.old_first_name,
+        r.old_last_name,
+        r.old_ssn,
+        r.old_email
       ],
       queryResult.one
     );

@@ -639,6 +639,22 @@ app.get("/get-all-branches", async (_, res) => {
   }
 });
 
+//Get treatments
+app.get("/get-patient-treatments/:patient_id", async (req, res) => {
+  try {
+    if (!authenticate(req, res)) return;
+    console.log("Getting all treatments for patient...");
+    const patient_id = req.params.patient_id;
+    console.log("received id: ", patient_id);
+    const reply = await db.func("get_patient_treatments", [patient_id]);
+    console.log("Got patient treatments", reply);
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("server has started on port " + port);

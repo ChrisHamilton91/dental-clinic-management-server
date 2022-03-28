@@ -586,14 +586,14 @@ app.put("/add-dentist-appointment", async (req, res) => {
 });
 
 //check all the appointments for a patient
-app.get("/check-appointments-for-patient", async (req, res) => {
+app.get("/check-appointments-for-patient/:patient_id", async (req, res) => {
   try {
     if (!authenticate(req, res)) return;
     console.log("Getting all appointments for patient...");
-    const { patient_id } = req.body;
-    console.log("received " + +JSON.stringify({ patient_id }));
+    const patient_id = req.params.patient_id;
+    console.log("received id: ", patient_id);
     const reply = await db.func("get_appointments_for_patient", [patient_id]);
-    console.log("Got appointments for patient " + reply);
+    console.log("Got appointments for patient ", reply);
     res.send(reply);
   } catch (err) {
     console.error(err.message);
@@ -602,14 +602,14 @@ app.get("/check-appointments-for-patient", async (req, res) => {
 });
 
 //check all the appointments for a dentist
-app.get("/check-appointments-for-dentist", async (req, res) => {
+app.get("/check-appointments-for-dentist/:dentist_id", async (req, res) => {
   try {
     if (!authenticate(req, res)) return;
     console.log("Getting all appointments for dentist...");
-    const { dentist_id } = req.body;
-    console.log("received " + +JSON.stringify({ dentist_id }));
+    const dentist_id = req.params.dentist_id;
+    console.log("received id: ", dentist_id);
     const reply = await db.func("get_appointments_for_dentist", [dentist_id]);
-    console.log("Got appointments for dentist " + reply);
+    console.log("Got appointments for dentist ", reply);
     res.send(reply);
   } catch (err) {
     console.error(err.message);

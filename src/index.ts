@@ -554,12 +554,12 @@ app.patch("/update-patient-with-person-id", async (req, res) => {
   }
 });
 
-//set a new appointment
-app.put("/set-appointment", async (req, res) => {
+//Add a new dentist appointment
+app.put("/add-dentist-appointment", async (req, res) => {
   try {
     if (!authenticate(req, res)) return;
-    console.log("Setting a new appointment...");
-    const { start_time, end_time, type, patient_id, invoice_id, room } =
+    console.log("Adding a new dentist appointment...");
+    const { start_time, end_time, type, patient_id, room, dentist_id } =
       req.body;
     console.log(
       "received " +
@@ -568,20 +568,16 @@ app.put("/set-appointment", async (req, res) => {
           end_time: end_time,
           type: type,
           patient_id: patient_id,
-          invoice_id: invoice_id,
           room: room,
+          dentist_id,
         })
     );
-    await db.proc("add_appointment", [
-      start_time,
-      end_time,
-      type,
-      patient_id,
-      invoice_id,
-      room,
-    ]);
-    const reply = `Added new appointment for patient ${patient_id}`;
-    console.log(reply);
+    const reply = await db.func(
+      "add_new_dentist_appointment",
+      [start_time, end_time, type, patient_id, room, dentist_id],
+      queryResult.one
+    );
+    console.log("Added appointment: ", reply);
     res.send(reply);
   } catch (err) {
     console.error(err.message);

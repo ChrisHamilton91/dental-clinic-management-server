@@ -621,6 +621,17 @@ app.get("/check-appointments-for-dentist", async (req, res) => {
   }
 });
 
+//Get procedure types
+app.get("/get-procedure-types", async (req, res) => {
+  try {
+    const reply = await db.func("get_procedure_types");
+    res.send(reply);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("server has started on port " + port);
